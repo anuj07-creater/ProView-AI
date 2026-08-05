@@ -52,9 +52,80 @@
 
 ---
 
-## 🚀 Getting Started
 
-### 1️⃣ Clone the Repository
+## ⚙️ Installation
+
+Follow these steps to set up and run **ProView-AI** on your local machine.
+
+### Prerequisites
+
+Ensure the following software is installed:
+
+- Node.js (v18 or later)
+- npm (comes with Node.js)
+- MongoDB (Local installation or MongoDB Atlas)
+- Google Gemini API Key
+
+### 1. Clone the Repository
+
 ```bash
-git clone 
+git clone https://github.com/anuj07-creater/ProView-AI.git
 cd ProView-AI
+```
+
+### 2. Install Dependencies
+
+Install the required packages for both the backend and frontend.
+
+**Backend**
+
+```bash
+cd server
+npm install
+```
+
+**Frontend**
+
+```bash
+cd ../client
+npm install
+```
+
+### 3. Configure Environment Variables
+
+Create a `.env` file inside the `server` directory and add the following variables:
+
+```env
+PORT=5000
+MONGODB_URI=your_mongodb_connection_string
+GEMINI_API_KEY=your_gemini_api_key
+JWT_SECRET=your_jwt_secret
+```
+
+> **Note:** Never commit your `.env` file to GitHub. Make sure it is listed in your `.gitignore` file.
+
+### 4. Run the Application
+
+Open **two terminal windows**.
+
+**Terminal 1 – Start the Backend**
+
+```bash
+cd server
+npm run dev
+```
+
+**Terminal 2 – Start the Frontend**
+
+```bash
+cd client
+npm run dev
+```
+
+### 5. Access the Application
+
+Open your browser and visit:
+
+```text
+http://localhost:5173
+```
