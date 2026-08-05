@@ -4,8 +4,8 @@
 
 [![Live Demo](https://img.shields.io/badge/Live_Demo-Visit_Now-green?style=for-the-badge&logo=vercel)](https://pro-view-ai.vercel.app/)  
 ![Tech](https://img.shields.io/badge/Tech_Stack-MERN,_Gemini_API,_TailwindCSS-blue?style=for-the-badge)  
-![License](https://img.shields.io/github/license/BhargavPatil2304/ProView-AI?style=for-the-badge)  
-![Stars](https://img.shields.io/github/stars/BhargavPatil2304/ProView-AI?style=for-the-badge)  
+![License](https://img.shields.io/github/license/anuj07-creater/ProView-AI?style=for-the-badge)  
+![Stars](https://img.shields.io/github/stars/anuj07-creater/ProView-AI?style=for-the-badge)  
 
 ---
 
@@ -56,5 +56,5 @@
 
 ### 1️⃣ Clone the Repository
 ```bash
-git clone https://github.com/BhargavPatil2304/ProView-AI.git
+git clone 
 cd ProView-AI
