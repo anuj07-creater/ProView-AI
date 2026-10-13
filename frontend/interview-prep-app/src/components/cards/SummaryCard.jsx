@@ -23,7 +23,7 @@ const SummaryCard = ({
         <div
           className="rounded-lg p-4 cursor-pointer relative "
           style={{
-            background: colors.bgcolor,
+            background: colors?.bgcolor || "linear-gradient(135deg, #e6f8f3 0%, #7f7cfa 100%)",
           }}
         >
           <div className="flex items-start">

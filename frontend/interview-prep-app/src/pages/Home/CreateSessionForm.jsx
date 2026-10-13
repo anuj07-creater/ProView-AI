@@ -115,7 +115,7 @@ const CreateSessionForm = () => {
 
         {error && (
           <p className="text-red-500 text-xs pb-2.5">
-            <error />
+            {error}
           </p>
         )}
 

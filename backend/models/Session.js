@@ -1,17 +1,33 @@
 const mongoose = require("mongoose");
+const connectDB = require("../config/db");
+const { memorySession } = require("../config/memoryStore");
 
 const SessionSchema = new mongoose.Schema(
   {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     token: { type: String, required: true },
     expiresAt: { type: Date, required: true },
     role: { type: String },
     experience: { type: Number },
     topicsToFocus: [{ type: String }],
     description: { type: String },
-    questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Question' }]
+    questions: [{ type: mongoose.Schema.Types.ObjectId, ref: "Question" }],
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Session", SessionSchema);
+const MongooseSession = mongoose.models.Session || mongoose.model("Session", SessionSchema);
+
+const SessionProxy = new Proxy(MongooseSession, {
+  get(target, prop) {
+    if (connectDB.getIsConnected && connectDB.getIsConnected()) {
+      return target[prop];
+    }
+    if (prop in memorySession) {
+      return memorySession[prop];
+    }
+    return target[prop];
+  },
+});
+
+module.exports = SessionProxy;

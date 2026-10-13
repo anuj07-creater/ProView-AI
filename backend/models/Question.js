@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const connectDB = require("../config/db");
+const { memoryQuestion } = require("../config/memoryStore");
 
 const questionSchema = new mongoose.Schema(
   {
@@ -17,6 +19,7 @@ const questionSchema = new mongoose.Schema(
     },
     note: {
       type: String,
+      default: "",
     },
     isPinned: {
       type: Boolean,
@@ -26,4 +29,18 @@ const questionSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Question", questionSchema);
+const MongooseQuestion = mongoose.models.Question || mongoose.model("Question", questionSchema);
+
+const QuestionProxy = new Proxy(MongooseQuestion, {
+  get(target, prop) {
+    if (connectDB.getIsConnected && connectDB.getIsConnected()) {
+      return target[prop];
+    }
+    if (prop in memoryQuestion) {
+      return memoryQuestion[prop];
+    }
+    return target[prop];
+  },
+});
+
+module.exports = QuestionProxy;

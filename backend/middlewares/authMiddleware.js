@@ -11,7 +11,7 @@ const protect = async (req, res, next) => {
     if (token && token.startsWith("Bearer")) {
       token = token.split(" ")[1]; // Extract token
 
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || "default_jwt_secret_proview_ai");
 
       const user = await User.findById(decoded.id).select("-password");
 

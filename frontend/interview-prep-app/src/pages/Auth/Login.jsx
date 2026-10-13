@@ -80,6 +80,16 @@ const Login = ({ setCurrentPage }) => {
         <button type="submit" className="btn-primary w-full">
           LOGIN
         </button>
+        <button
+          type="button"
+          onClick={() => {
+            setEmail("demo@proview.ai");
+            setPassword("password123");
+          }}
+          className="w-full text-xs font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 py-2 rounded-md mt-2 transition cursor-pointer"
+        >
+          Use Demo Credentials (demo@proview.ai)
+        </button>
         <p className="text-[13px] text-slate-800 mt-3">
           Don’t have an account?{" "}
           <button

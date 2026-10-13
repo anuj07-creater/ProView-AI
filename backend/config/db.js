@@ -1,13 +1,31 @@
 const mongoose = require("mongoose");
 
+let isConnected = false;
+
 const connectDB = async () => {
+  const uri = process.env.MONGO_URI;
+  if (!uri) {
+    console.log("ℹ️ No MONGO_URI specified. Operating with in-memory data store.");
+    isConnected = false;
+    return false;
+  }
+
   try {
-    await mongoose.connect(process.env.MONGO_URI, {});
-    console.log("MongoDB connected");
+    mongoose.set("bufferCommands", false);
+    await mongoose.connect(uri, { serverSelectionTimeoutMS: 2000 });
+    console.log("MongoDB connected successfully");
+    isConnected = true;
+    return true;
   } catch (err) {
-    console.error("Error connecting to MongoDB", err);
-    process.exit(1);
+    console.warn("⚠️ MongoDB connection failed. Falling back to in-memory store:", err.message);
+    isConnected = false;
+    return false;
   }
 };
 
-module.exports = connectDB
+const getIsConnected = () => isConnected;
+
+connectDB.getIsConnected = getIsConnected;
+connectDB.connectDB = connectDB;
+
+module.exports = connectDB;

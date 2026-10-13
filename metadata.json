@@ -1,0 +1,5 @@
+{
+  "name": "ProView AI - Interview Prep",
+  "description": "AI-powered interview preparation platform to practice questions, generate answers, and master role-specific technical concepts.",
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
