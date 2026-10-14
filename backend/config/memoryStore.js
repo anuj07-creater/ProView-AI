@@ -105,7 +105,7 @@ const memoryUser = {
       _id: id,
       id,
       name: data.name,
-      email: data.email,
+      email: (data.email || "").trim().toLowerCase(),
       password: data.password,
       profileImageUrl: data.profileImageUrl || null,
       createdAt: new Date().toISOString(),

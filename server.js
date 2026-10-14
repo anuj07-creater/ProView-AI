@@ -36,9 +36,16 @@ app.use(
   })
 );
 
-// Connect DB (handles MongoDB if provided, or initializes in-memory store)
-connectDB();
 
+// Connect to MongoDB before accepting requests
+const dbConnected = await connectDB();
+
+if (process.env.NODE_ENV === 'production' && !dbConnected) {
+  console.error(
+    '[Startup Error] MongoDB connection failed. Server will not start.'
+  );
+  process.exit(1);
+}
 app.use(express.json());
 
 // API Routes
@@ -50,6 +57,20 @@ app.use('/api/ai/generate-explanation', protect, generateConceptExplanation);
 
 // Static uploads
 app.use('/uploads', express.static(uploadsDir));
+
+// Health & Diagnostics endpoint
+app.get('/api/health', (req, res) => {
+  const isDbConnected = connectDB.getIsConnected ? connectDB.getIsConnected() : false;
+  res.json({
+    status: 'ok',
+    database: {
+      connected: isDbConnected,
+      mode: isDbConnected ? 'mongodb' : 'in-memory',
+      error: connectDB.getConnectionError ? connectDB.getConnectionError() : null,
+    },
+    uptime: Math.floor(process.uptime()),
+  });
+});
 
 // Mongoose offline fallback error middleware
 app.use((err, req, res, next) => {

@@ -23,6 +23,20 @@ const SessionProxy = new Proxy(MongooseSession, {
     if (connectDB.getIsConnected && connectDB.getIsConnected()) {
       return target[prop];
     }
+    const isProduction = process.env.NODE_ENV === "production";
+    const hasConfiguredUri = !!(process.env.MONGO_URI || process.env.MONGODB_URI);
+
+    if (isProduction && hasConfiguredUri) {
+      if (["create", "save", "findOneAndUpdate"].includes(prop)) {
+        return () =>
+          Promise.reject(
+            new Error(
+              "Database service unavailable: MongoDB connection is not established in production."
+            )
+          );
+      }
+    }
+
     if (prop in memorySession) {
       return memorySession[prop];
     }

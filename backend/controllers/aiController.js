@@ -56,8 +56,8 @@ const generateInterviewQuestions = async (req, res) => {
         numberOfQuestions
       );
 
-      // Try gemini-2.5-flash, with fallback to gemini-2.5-flash-lite
-      const modelsToTry = ["gemini-2.5-flash", "gemini-2.5-flash-lite"];
+      // Try gemini-2.5-flash, with fallback to gemini-3.5-flash-lite
+      const modelsToTry = ["gemini-2.5-flash", "gemini-3.5-flash-lite"];
       for (const model of modelsToTry) {
         try {
           const response = await ai.models.generateContent({
@@ -78,7 +78,7 @@ const generateInterviewQuestions = async (req, res) => {
             return res.status(200).json(data);
           }
         } catch (geminiError) {
-          console.warn(`Gemini (${model}) generation attempt failed:`, geminiError.message);
+          console.log(`[AI] Model (${model}) generation note:`, geminiError.message);
         }
       }
     }
@@ -136,7 +136,7 @@ const generateConceptExplanation = async (req, res) => {
     const ai = getAiClient();
     if (ai) {
       const prompt = conceptExplainPrompt(question);
-      const modelsToTry = ["gemini-2.5-flash", "gemini-2.5-flash-lite"];
+      const modelsToTry = ["gemini-2.5-flash", "gemini-3.5-flash-lite"];
 
       for (const model of modelsToTry) {
         try {
@@ -161,7 +161,7 @@ const generateConceptExplanation = async (req, res) => {
             });
           }
         } catch (geminiError) {
-          console.warn(`Gemini (${model}) explanation attempt failed:`, geminiError.message);
+          console.log(`[AI] Model (${model}) explanation note:`, geminiError.message);
         }
       }
     }

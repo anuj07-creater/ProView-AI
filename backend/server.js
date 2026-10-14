@@ -2,7 +2,6 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const { connect } = require("http2");
 const connectDB = require('./config/db');
 const authRoute = require('./routes/authRoute');
 const sessionRoute = require('./routes/sessionRoute');
@@ -36,6 +35,20 @@ app.use("/api/ai/generate-explanation", protect, generateConceptExplanation);
 // Serve uploads folder
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+// Health & Diagnostics endpoint
+app.get("/api/health", (req, res) => {
+  const isDbConnected = connectDB.getIsConnected ? connectDB.getIsConnected() : false;
+  res.json({
+    status: "ok",
+    database: {
+      connected: isDbConnected,
+      mode: isDbConnected ? "mongodb" : "in-memory",
+      error: connectDB.getConnectionError ? connectDB.getConnectionError() : null,
+    },
+    uptime: Math.floor(process.uptime()),
+  });
+});
+
 // Start Server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, "0.0.0.0", () => console.log(`Server running on port ${PORT}`));
